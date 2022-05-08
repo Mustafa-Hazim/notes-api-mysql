@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/user')
+const controller = require('../controllers/users')
 const tokenValidate = require('../token_validate');
 
 router.get('/', tokenValidate, controller.getAll)

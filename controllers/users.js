@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken');
-const User = require('../models/user')
+const User = require('../models/users')
 
 const secret = process.env.WEB_TOKEN_SECRET
 
@@ -83,7 +83,7 @@ const login = ('/login', (req, res) => {
 
 
 const status = ('/status', (req, res) => {
-    res.send('logged in')
+    res.send(req.user)
 })
 
 

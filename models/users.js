@@ -5,9 +5,10 @@ module.exports = class User {
         this.userData = userData
 
         this.save = (callback) => {
-            sql.query("INSERT INTO users SET ?", userData, function (err, res) {
+            console.log(this.userData)
+            sql.query("INSERT INTO users SET ?", this.userData, function (err, res) {
                 if (err) return callback(err)
-                return callback(null, { id: res.insertId, ...user })
+                return callback(null, { id: res.insertId, ...this.userData })
             });
 
         }
