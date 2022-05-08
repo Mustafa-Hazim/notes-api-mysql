@@ -42,12 +42,7 @@ const register = ('/register', (req, res) => {
             user.save((err, result) => {
                 if (err) return res.status(400).json(err)
 
-                else {
-                    // sign webtoken where expiresIn in seconds
-                    var token = jwt.sign({ id: result.id }, secret, { expiresIn: 86400 });
-
-                    res.json({ token })
-                }
+                res.json({ msg: 'user registerd contact the admin to activate your account at hazim6163@gmail.com' })
             })
         }
     })
@@ -68,9 +63,10 @@ const login = ('/login', (req, res) => {
 
         // compare passwords 
         const valid = bcrypt.compareSync(req.body.password, user.password);
-
+        // wrong password
         if (!valid) return res.status(401).json({ error: 'check the email and the password' })
-
+        // check if verify account: 
+        if (!user.verified) return res.status(401).json({ error: 'please contact the admin to activate your account at hazim6163@gmail.com' })
         // sign webtoken where expiresIn in seconds
         var token = jwt.sign({ id: user.id }, secret, { expiresIn: 86400 });
 
