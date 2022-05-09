@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken');
 const User = require('../models/users')
+const UserCard = require('../models/userCards')
 
 const secret = process.env.WEB_TOKEN_SECRET
 
@@ -11,6 +12,17 @@ const getAll = ('/', (req, res) => {
     })
 })
 
+/**
+ * extract the data from the usesr request
+ * create bcrypt password
+ * check if the user already registered
+ * create usercard
+ * save user card without the user id
+ * create uesr object 
+ * save user to the database
+ * append usercard with the inserted user id 
+ * send response back to the user
+ */
 const register = ('/register', (req, res) => {
 
     // extract the data from the request
@@ -28,22 +40,37 @@ const register = ('/register', (req, res) => {
         else if (result.length > 0) res.status(400).json({ error: 'user alrady registerd' })
         // register user 
         else {
-            //todo create userCard:
+            //create userCard:
+            const userCard = new UserCard({
+                fname: data.fname,
+                lname: data.lname,
+                email: data.email
+            })
+            // save user card to the database : 
+            userCard.save((err, userCardResult) => {
+                if (err) return res.status(500).json({ error: err })
+                else {
+                    //create new user object:
+                    const user = new User({
+                        userCard: userCardResult.id,
+                        email: data.email,
+                        password: data.password,
+                        verified: 0
+                    })
+                    // save user to the data base:
+                    user.save((err, userResult) => {
+                        if (err) return res.status(400).json(err)
+                        // append usercard with the inserted user :
+                        UserCard.updateUserIdById({ id: userCardResult.id, userID: userResult.id }, (err, updateUserCardResult) => {
+                            if (err) return res.status(500).json({ error: err })
+                            // send successful response to the user: 
+                            else return res.json({ msg: 'user registerd contact the admin to activate your account at hazim6163@gmail.com' })
+                        })
 
-            //create new user object:
-            const user = new User({
-                //todo add userCard id:
-                email: data.email,
-                password: data.password,
-                verified: 0
+                    })
+                }
             })
 
-            // save user to the data base:
-            user.save((err, result) => {
-                if (err) return res.status(400).json(err)
-
-                res.json({ msg: 'user registerd contact the admin to activate your account at hazim6163@gmail.com' })
-            })
         }
     })
 
