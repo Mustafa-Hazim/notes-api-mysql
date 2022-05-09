@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/users')
+const tagsRoutes = require('./routes/tags')
 
 // create express app
 const app = express();
@@ -12,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // routes: 
 app.use('/users', userRoutes)
+app.use('/tags', tagsRoutes)
 
 
 app.get('/', (req, res, next) => {
