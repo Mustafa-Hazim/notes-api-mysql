@@ -3,6 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/users')
 const tagsRoutes = require('./routes/tags')
+const peopleRoutes = require('./routes/people')
 
 // create express app
 const app = express();
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // routes: 
 app.use('/users', userRoutes)
 app.use('/tags', tagsRoutes)
+app.use('/people', peopleRoutes)
 
 
 app.get('/', (req, res, next) => {
