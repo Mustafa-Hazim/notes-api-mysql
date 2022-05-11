@@ -4,7 +4,7 @@ const sql = require('../db/connection')
  * save branch 
  * get all branhces getAll
  * get branch by id getById
- * todo get all branch childs
+ * get all branch child
  */
 module.exports = class Branch {
     constructor(data) {
@@ -68,6 +68,12 @@ module.exports = class Branch {
         })
     }
 
-    //todo get all nested branches
+    //get all branch child by id: 
+    static getNestedById = (id, callback) => {
+        const query = 'SELECT * FROM branches WHERE parentID = ?'
+        sql.query(query, [id], (err, result) => {
+            callback(err, result)
+        })
+    }
 
 }

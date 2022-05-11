@@ -16,6 +16,9 @@ const Branch = require('../models/branches')
  *  
  * edit to edit one branch required new name as name and the branch id
  * get all to get all the branch
+ * 
+ * getNested: 
+ *      to get all nested branches for branch by id
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'the tag name is required' } })
@@ -27,7 +30,6 @@ const add = ('/', (req, res) => {
     if (data.parentID === 'root' || !data.parentID || data.parentID == 0) {
         // get the root branch id for the user: 
         Branch.getRootId(data.user, (parentID) => {
-            console.log(parentID)
             data.parentID = parentID
             // get branch position:
             Branch.getMaxPosition(data.parentID, (crntPosition) => {
@@ -69,26 +71,7 @@ const add = ('/', (req, res) => {
     }
 })
 
-
-const updateData = (data, branch) => {
-    if (data.name)
-        branch.name = data.name
-    if (data.type)
-        branch.type = data.type
-    if (data.parentID)
-        branch.parentID = data.parentID
-    if (data.lang)
-        branch.lang = data.lang
-    if (data.pinned)
-        branch.pinned = data.pinned
-    if (data.positive)
-        branch.positive = data.positive
-    if (data.extra)
-        branch.extra = data.extra
-    return branch
-}
-
-// important to send all the branch data when update (put request)
+// send some data to update the branch: 
 const edit = ('/', (req, res) => {
     if (!req.body.id) return res.status(400).json({ error: { message: 'id is required' } })
     // update branch by id function 
@@ -117,16 +100,48 @@ const getAll = ('/', (req, res) => {
     Branch.getAll(req.user.id, (err, result) => {
         if (err) return res.status(500).json(err)
         // parse extra json: 
-        result = result.map((b) => {
-            b.extra = JSON.parse(b.extra)
-            return b
-        })
+        result = parseArrExtra(result)
         res.json(result)
     })
 })
 
+const getNested = ('/nested', (req, res) => {
+    Branch.getNestedById(req.query.id, (err, result) => {
+        if (err) return res.json(err)
+        result = parseArrExtra(result)
+        return res.json(result)
+    })
+})
+
+function parseArrExtra(result) {
+    result = result.map((b) => {
+        b.extra = JSON.parse(b.extra)
+        return b
+    })
+    return result
+}
+
+function updateData(data, branch) {
+    if (data.name)
+        branch.name = data.name
+    if (data.type)
+        branch.type = data.type
+    if (data.parentID)
+        branch.parentID = data.parentID
+    if (data.lang)
+        branch.lang = data.lang
+    if (data.pinned)
+        branch.pinned = data.pinned
+    if (data.positive)
+        branch.positive = data.positive
+    if (data.extra)
+        branch.extra = data.extra
+    return branch
+}
+
 module.exports = {
     add,
     edit,
-    getAll
+    getAll,
+    getNested
 }
