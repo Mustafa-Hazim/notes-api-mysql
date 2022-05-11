@@ -5,7 +5,8 @@ const sql = require('../db/connection')
  * save tag 
  * get all tags getAll
  * get tag by id getById
- * add branch tag
+ * add branch tag branchesTagsInsert
+ * remove branch tag removeBranchTag
  */
 module.exports = class Tag {
     constructor(data) {

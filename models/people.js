@@ -4,6 +4,8 @@ const sql = require('../db/connection')
  * save person 
  * get all people getAll based on the user
  * get tag by id getById
+ * add branch person branchesPersonInsert
+ * remove branch person removeBranchPerson
  */
 module.exports = class Person {
     constructor(data) {

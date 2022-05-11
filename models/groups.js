@@ -4,6 +4,8 @@ const sql = require('../db/connection')
  * save group 
  * get all groups getAll
  * get group by id getById
+ * add branch group branchesGroupsInsert
+ * remove branch group removeBranchGroup
  */
 module.exports = class Group {
     constructor(data) {

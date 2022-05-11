@@ -4,7 +4,7 @@ const sql = require('../db/connection')
  * save branch 
  * get all branhces getAll
  * get branch by id getById
- * get all branch child
+ * get all branch child getNestedById
  */
 module.exports = class Branch {
     constructor(data) {
