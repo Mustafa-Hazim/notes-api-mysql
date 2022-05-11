@@ -5,6 +5,7 @@ const userRoutes = require('./routes/users')
 const tagsRoutes = require('./routes/tags')
 const peopleRoutes = require('./routes/people')
 const groupsRoutes = require('./routes/groups')
+const branchesRoutes = require('./routes/branches')
 
 // create express app
 const app = express();
@@ -18,6 +19,7 @@ app.use('/users', userRoutes)
 app.use('/tags', tagsRoutes)
 app.use('/people', peopleRoutes)
 app.use('/groups', groupsRoutes)
+app.use('/branches', branchesRoutes)
 
 
 app.get('/', (req, res, next) => {
