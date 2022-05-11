@@ -1,9 +1,11 @@
+const res = require('express/lib/response');
 const sql = require('../db/connection')
 
 /**
  * save tag 
  * get all tags getAll
  * get tag by id getById
+ * add branch tag
  */
 module.exports = class Tag {
     constructor(data) {
@@ -36,6 +38,24 @@ module.exports = class Tag {
         const query = "UPDATE tags SET name = ? WHERE id = ?"
         sql.query(query, [tagName, id], (err, result) => {
             callback(err, result)
+        })
+    }
+
+    // add barnch tag:
+    static branchesTagsInsert = (branchId, tagId, callback) => {
+        const query = 'INSERT INTO branches_tags (branchID, tagID) VALUES (?, ?)'
+        const arrData = [branchId, tagId]
+        sql.query(query, arrData, (err, result) => {
+            callback(err, result)
+        })
+    }
+
+    // remove barnch tag:
+    static removeBranchTag = (branchID, tagID, callback) => {
+        const query = "DELETE FROM branches_tags WHERE `branchID` = ? AND `tagID` = ?"
+        const arrData = [branchID, tagID]
+        sql.query(query, arrData, (err, result) => {
+            return callback(err, result)
         })
     }
 

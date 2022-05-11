@@ -1,4 +1,5 @@
 const Branch = require('../models/branches')
+const Tag = require('../models/tags')
 /**
  * add new branch
  *      - exract the data from the request
@@ -19,6 +20,10 @@ const Branch = require('../models/branches')
  * 
  * getNested: 
  *      to get all nested branches for branch by id
+ * 
+ * toggle branch tag:
+ *      to toggle branch tag
+ * 
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'the tag name is required' } })
@@ -113,6 +118,29 @@ const getNested = ('/nested', (req, res) => {
     })
 })
 
+
+const toggleBranchTag = ('/toggle-tag', (req, res) => {
+    Tag.branchesTagsInsert(req.body.branchID, req.body.tagID, (err, result) => {
+        if (err) {
+            if (err.errno === 1062) {
+                Tag.removeBranchTag(req.body.branchID, req.body.tagID, (removeTagErr, removeTagRes) => {
+                    if (removeTagErr)
+                        return res.json(removeTagErr)
+                    else {
+                        return res.json({ msg: 'tag removed' })
+                    }
+                })
+            } else {
+                return res.send(err)
+            }
+        } else {
+            return res.json({ msg: 'tag added' })
+        }
+    })
+})
+
+
+
 function parseArrExtra(result) {
     result = result.map((b) => {
         b.extra = JSON.parse(b.extra)
@@ -143,5 +171,6 @@ module.exports = {
     add,
     edit,
     getAll,
-    getNested
+    getNested,
+    toggleBranchTag,
 }

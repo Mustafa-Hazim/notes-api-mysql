@@ -7,5 +7,6 @@ router.get('/', tokenValidate, controller.getAll)
 router.post('/', tokenValidate, controller.add)
 router.patch('/', tokenValidate, controller.edit)
 router.get('/nested', tokenValidate, controller.getNested)
+router.post('/toggle-tag', tokenValidate, controller.toggleBranchTag)
 
 module.exports = router;
