@@ -1,5 +1,6 @@
 const Branch = require('../models/branches')
 const Tag = require('../models/tags')
+const Group = require('../models/groups')
 /**
  * add new branch
  *      - exract the data from the request
@@ -21,9 +22,11 @@ const Tag = require('../models/tags')
  * getNested: 
  *      to get all nested branches for branch by id
  * 
- * toggle branch tag:
+ * toggleBranchTag:
  *      to toggle branch tag
  * 
+ * toggleBranchGroup: 
+ *      to toggle branch group
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'the tag name is required' } })
@@ -119,7 +122,13 @@ const getNested = ('/nested', (req, res) => {
 })
 
 
+/**
+ * this function will insert new record to branches_tags table 
+ * and if the record already inserted then will remove the recorde 
+ * in short say --> toggle branche tag <--
+ */
 const toggleBranchTag = ('/toggle-tag', (req, res) => {
+    if (!req.body.tagID || !req.body.branchID) return res.status(400).json({ err: 'need branchID and tagID' })
     Tag.branchesTagsInsert(req.body.branchID, req.body.tagID, (err, result) => {
         if (err) {
             if (err.errno === 1062) {
@@ -135,6 +144,32 @@ const toggleBranchTag = ('/toggle-tag', (req, res) => {
             }
         } else {
             return res.json({ msg: 'tag added' })
+        }
+    })
+})
+
+/**
+ * this function will insert new record to branches_groups table 
+ * and if the record already inserted then will remove the recorde 
+ * in short say --> toggle branche group <--
+ */
+const toggleBranchGroup = ('/toggle-group', (req, res) => {
+    if (!req.body.groupID || !req.body.branchID) return res.status(400).json({ err: 'need branchID and groupID' })
+    Group.branchesGroupsInsert(req.body.branchID, req.body.groupID, (err, result) => {
+        if (err) {
+            if (err.errno === 1062) {
+                Group.removeBranchGroup(req.body.branchID, req.body.groupID, (removeGroupErr, removeGroupRes) => {
+                    if (removeGroupErr)
+                        return res.json(removeGroupErr)
+                    else {
+                        return res.json({ msg: 'group removed' })
+                    }
+                })
+            } else {
+                return res.send(err)
+            }
+        } else {
+            return res.json({ msg: 'group added' })
         }
     })
 })
@@ -173,4 +208,5 @@ module.exports = {
     getAll,
     getNested,
     toggleBranchTag,
+    toggleBranchGroup,
 }

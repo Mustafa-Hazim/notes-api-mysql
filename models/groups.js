@@ -39,6 +39,24 @@ module.exports = class Group {
         })
     }
 
+    // add barnch group:
+    static branchesGroupsInsert = (branchID, groupID, callback) => {
+        const query = 'INSERT INTO branches_groups (branchID, groupID) VALUES (?, ?)'
+        const arrData = [branchID, groupID]
+        sql.query(query, arrData, (err, result) => {
+            callback(err, result)
+        })
+    }
+
+    // remove barnch group:
+    static removeBranchGroup = (branchID, groupID, callback) => {
+        const query = "DELETE FROM branches_groups WHERE `branchID` = ? AND `groupID` = ?"
+        const arrData = [branchID, groupID]
+        sql.query(query, arrData, (err, result) => {
+            return callback(err, result)
+        })
+    }
+
     //todo get all group branches
 
 }
