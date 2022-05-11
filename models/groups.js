@@ -6,6 +6,7 @@ const sql = require('../db/connection')
  * get group by id getById
  * add branch group branchesGroupsInsert
  * remove branch group removeBranchGroup
+ * get all group branches getGroupBranches
  */
 module.exports = class Group {
     constructor(data) {
@@ -59,6 +60,12 @@ module.exports = class Group {
         })
     }
 
-    //todo get all group branches
+    //get all group branches
+    static getGroupBranches = (groupID, callback) => {
+        const query = 'SELECT * from branches_groups  JOIN branches on branchID = branches.id WHERE groupID = ?'
+        sql.query(query, [groupID], (err, result) => {
+            callback(err, result)
+        })
+    }
 
 }

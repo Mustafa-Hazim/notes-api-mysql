@@ -3,6 +3,7 @@ const Group = require('../models/groups')
  * add to add new group
  * edit to edit one group required new name as name and the group id
  * get all to get all the group
+ * get all group branches getGroupBranches
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'name is required' } })
@@ -38,8 +39,28 @@ const getAll = ('/', (req, res) => {
     })
 })
 
+// to get all group branches
+const getGroupBranches = ('/', (req, res, next) => {
+    if (!req.query.id) return next()
+    Group.getGroupBranches(req.query.id, (err, result) => {
+        if (err) return res.status(500).json(err)
+        result = parseArrExtra(result)
+        return res.json(result)
+    })
+})
+
+// functoin to parse branch extra
+function parseArrExtra(result) {
+    result = result.map((b) => {
+        b.extra = JSON.parse(b.extra)
+        return b
+    })
+    return result
+}
+
 module.exports = {
     add,
     edit,
-    getAll
+    getAll,
+    getGroupBranches,
 }
