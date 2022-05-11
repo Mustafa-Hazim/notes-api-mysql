@@ -1,6 +1,7 @@
 const Branch = require('../models/branches')
 const Tag = require('../models/tags')
 const Group = require('../models/groups')
+const Person = require('../models/people')
 /**
  * add new branch
  *      - exract the data from the request
@@ -27,6 +28,9 @@ const Group = require('../models/groups')
  * 
  * toggleBranchGroup: 
  *      to toggle branch group
+ * 
+ * toggleBranchPerson:
+ *      to toggle branch person
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'the tag name is required' } })
@@ -174,6 +178,32 @@ const toggleBranchGroup = ('/toggle-group', (req, res) => {
     })
 })
 
+/**
+ * this function will insert new record to branches_people table 
+ * and if the record already inserted then will remove the recorde 
+ * in short say --> toggle branche person <--
+ */
+const toggleBranchPerson = ('/toggle-person', (req, res) => {
+    if (!req.body.personID || !req.body.branchID) return res.status(400).json({ err: 'need branchID and personID' })
+    Person.branchesPersonInsert(req.body.branchID, req.body.personID, (err, result) => {
+        if (err) {
+            if (err.errno === 1062) {
+                Person.removeBranchPerson(req.body.branchID, req.body.personID, (removePersonErr, removePersonRes) => {
+                    if (removePersonErr)
+                        return res.json(removePersonErr)
+                    else {
+                        return res.json({ msg: 'person removed' })
+                    }
+                })
+            } else {
+                return res.send(err)
+            }
+        } else {
+            return res.json({ msg: 'person added' })
+        }
+    })
+})
+
 
 
 function parseArrExtra(result) {
@@ -209,4 +239,5 @@ module.exports = {
     getNested,
     toggleBranchTag,
     toggleBranchGroup,
+    toggleBranchPerson,
 }

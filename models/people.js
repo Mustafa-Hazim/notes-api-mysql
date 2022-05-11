@@ -39,6 +39,24 @@ module.exports = class Person {
         })
     }
 
+    // add barnch person:
+    static branchesPersonInsert = (branchID, personID, callback) => {
+        const query = 'INSERT INTO branches_people (branchID, personID) VALUES (?, ?)'
+        const arrData = [branchID, personID]
+        sql.query(query, arrData, (err, result) => {
+            callback(err, result)
+        })
+    }
+
+    // remove barnch person:
+    static removeBranchPerson = (branchID, personID, callback) => {
+        const query = "DELETE FROM branches_people WHERE `branchID` = ? AND `personID` = ?"
+        const arrData = [branchID, personID]
+        sql.query(query, arrData, (err, result) => {
+            return callback(err, result)
+        })
+    }
+
     //todo get all person branches
 
 }
