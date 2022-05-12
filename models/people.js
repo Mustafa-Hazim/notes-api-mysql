@@ -6,6 +6,7 @@ const sql = require('../db/connection')
  * get tag by id getById
  * add branch person branchesPersonInsert
  * remove branch person removeBranchPerson
+ * get all person branches getPersonBranches
  */
 module.exports = class Person {
     constructor(data) {
@@ -59,6 +60,13 @@ module.exports = class Person {
         })
     }
 
-    //todo get all person branches
+
+    //get all person branches
+    static getPersonBranches = (personID, callback) => {
+        const query = 'SELECT * from branches_people  JOIN branches on branchID = branches.id WHERE personID = ?'
+        sql.query(query, [personID], (err, result) => {
+            callback(err, result)
+        })
+    }
 
 }

@@ -3,6 +3,7 @@ const Person = require('../models/people')
  * add to add new person
  * edit to edit one tag required new fname and lname and the person id
  * get all to get all people
+ * get person branches getPersonBranches
  */
 const add = ('/', (req, res) => {
     if (!req.body.fname) return res.status(400).json({ error: { message: 'the first name is required' } })
@@ -38,8 +39,32 @@ const getAll = ('/', (req, res) => {
     })
 })
 
+
+
+// to get all person branches
+const getPersonBranches = ('/', (req, res, next) => {
+    if (!req.query.id) return next()
+    Person.getPersonBranches(req.query.id, (err, result) => {
+        if (err) return res.status(500).json(err)
+        result = parseArrExtra(result)
+        return res.json(result)
+    })
+})
+
+// functoin to parse branch extra
+function parseArrExtra(result) {
+    result = result.map((b) => {
+        b.extra = JSON.parse(b.extra)
+        return b
+    })
+    return result
+}
+
+
+
 module.exports = {
     add,
     edit,
-    getAll
+    getAll,
+    getPersonBranches,
 }
