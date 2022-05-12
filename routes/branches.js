@@ -10,5 +10,8 @@ router.get('/nested', tokenValidate, controller.getNested)
 router.post('/toggle-tag', tokenValidate, controller.toggleBranchTag)
 router.post('/toggle-group', tokenValidate, controller.toggleBranchGroup)
 router.post('/toggle-person', tokenValidate, controller.toggleBranchPerson)
+router.get('/branch-tags', tokenValidate, controller.getBranchTags)
+router.get('/branch-groups', tokenValidate, controller.getBranchGroups)
+router.get('/branch-people', tokenValidate, controller.getBranchPeople)
 
 module.exports = router;

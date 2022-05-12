@@ -5,6 +5,9 @@ const sql = require('../db/connection')
  * get all branhces getAll
  * get branch by id getById
  * get all branch child getNestedById
+ * get all branch tags getBranchTags
+ * get all brancg groups getBrachGroups
+ * get all branch people getBranchPeople
  */
 module.exports = class Branch {
     constructor(data) {
@@ -76,4 +79,34 @@ module.exports = class Branch {
         })
     }
 
+    // get all branch tags:
+    static getBranchTags = (id) => {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * from branches_tags  JOIN tags on tagID = tags.id WHERE branchID = ?'
+            sql.query(query, [id], (err, result) => {
+                if (err) reject(err)
+                else resolve(result)
+            })
+        })
+    }
+    // get all branch groups:
+    static getBranchGroups = (id) => {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * from branches_groups  JOIN groups on groupID = groups.id WHERE branchID = ?'
+            sql.query(query, [id], (err, result) => {
+                if (err) reject(err)
+                else resolve(result)
+            })
+        })
+    }
+    // get all branch people:
+    static getBranchPeople = (id) => {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * from branches_people  JOIN people on personID = people.id WHERE branchID = ?'
+            sql.query(query, [id], (err, result) => {
+                if (err) reject(err)
+                else resolve(result)
+            })
+        })
+    }
 }

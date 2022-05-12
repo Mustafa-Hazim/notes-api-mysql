@@ -205,6 +205,33 @@ const toggleBranchPerson = ('/toggle-person', (req, res) => {
 })
 
 
+/**
+ * get branch tags groups people provide id of the branch:
+ * 
+ */
+// get branch tags
+const getBranchTags = ('/branch-tags', (req, res) => {
+    if (!req.query.id) return res.status(400).json({ error: 'branch id is required' })
+    Branch.getBranchTags(req.query.id)
+        .then((result) => { res.json(result) })
+        .catch((err) => { res.status(500).json(err) })
+})
+// get branch groups
+const getBranchGroups = ('/branch-groups', (req, res) => {
+    if (!req.query.id) return res.status(400).json({ error: 'branch id is required' })
+    Branch.getBranchGroups(req.query.id)
+        .then((result) => { res.json(result) })
+        .catch((err) => { res.status(500).json(err) })
+})
+// get branch people
+const getBranchPeople = ('/branch-people', (req, res) => {
+    if (!req.query.id) return res.status(400).json({ error: 'branch id is required' })
+    Branch.getBranchPeople(req.query.id)
+        .then((result) => { res.json(result) })
+        .catch((err) => { res.status(500).json(err) })
+})
+
+
 
 function parseArrExtra(result) {
     result = result.map((b) => {
@@ -240,4 +267,7 @@ module.exports = {
     toggleBranchTag,
     toggleBranchGroup,
     toggleBranchPerson,
+    getBranchTags,
+    getBranchGroups,
+    getBranchPeople,
 }
