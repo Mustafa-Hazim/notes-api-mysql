@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/users')
 const tagsRoutes = require('./routes/tags')
@@ -9,6 +10,16 @@ const branchesRoutes = require('./routes/branches')
 
 // create express app
 const app = express();
+
+const corsOptions = {
+    origin: [
+        'http://localhost:3000', 
+        'http://localhost:3001'
+    ]
+}
+
+// user cors : 
+app.use(cors(corsOptions))
 
 //use body-parser:
 app.use(bodyParser.json());
