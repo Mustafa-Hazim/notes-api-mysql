@@ -35,7 +35,7 @@ const register = ('/register', (req, res) => {
     // register user : 
     User.findByEmail(req.body.email, (err, result) => {
         // check if errors 
-        if (err) res.status(500).json({error: err, errMsg: 'internal server error'})
+        if (err) res.status(500).json({ error: err, errMsg: 'internal server error' })
         // check if the user already registerd
         else if (result.length > 0) res.status(400).json({ error: 'user alrady registerd' })
         // register user 
@@ -59,12 +59,12 @@ const register = ('/register', (req, res) => {
                     })
                     // save user to the data base:
                     user.save((err, userResult) => {
-                        if (err) return res.status(500).json({error: err, errMsg: 'internal server error when save user in the register controller'})
+                        if (err) return res.status(500).json({ error: err, errMsg: 'internal server error when save user in the register controller' })
                         // append usercard with the inserted user :
                         UserCard.updateUserIdById({ id: userCardResult.id, userID: userResult.id }, (err, updateUserCardResult) => {
                             if (err) return res.status(500).json({ error: err, errMsg: 'internal server error 500 when update user card register controller' })
                             // send successful response to the user: 
-                            else return res.json({ msg: 'user registerd contact the admin to activate your account at hazim6163@gmail.com'})
+                            else return res.json({ msg: 'user registerd contact the admin to activate your account at hazim6163@gmail.com' })
                         })
 
                     })
