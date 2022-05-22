@@ -31,6 +31,9 @@ const Person = require('../models/people')
  * 
  * toggleBranchPerson:
  *      to toggle branch person
+ * 
+ * fullyDeleteBranch
+ * 
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'the tag name is required' } })
@@ -231,6 +234,17 @@ const getBranchPeople = ('/branch-people', (req, res) => {
         .catch((err) => { res.status(500).json(err) })
 })
 
+// fullyDeleteBranch
+const fullyDeleteBranch = ('/', (req, res) => {
+    if (!req.query.id) return res.status(400).json({ error: 'branch id is required' })
+    Branch.fullDeleteBranch(req.query.id)
+        .then((result) => {
+            return res.json(result)
+        }).catch((err) => {
+            res.status(500).json(err)
+        })
+})
+
 
 
 function parseArrExtra(result) {
@@ -270,4 +284,6 @@ module.exports = {
     getBranchTags,
     getBranchGroups,
     getBranchPeople,
+    fullyDeleteBranch,
+
 }

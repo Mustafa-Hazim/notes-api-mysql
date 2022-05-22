@@ -6,6 +6,7 @@ const tokenValidate = require('../token_validate');
 router.get('/', tokenValidate, controller.getAll)
 router.post('/', tokenValidate, controller.add)
 router.patch('/', tokenValidate, controller.edit)
+router.delete('/', tokenValidate, controller.fullyDeleteBranch)
 router.get('/nested', tokenValidate, controller.getNested)
 router.post('/toggle-tag', tokenValidate, controller.toggleBranchTag)
 router.post('/toggle-group', tokenValidate, controller.toggleBranchGroup)

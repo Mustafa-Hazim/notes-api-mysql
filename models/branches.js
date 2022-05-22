@@ -8,6 +8,7 @@ const sql = require('../db/connection')
  * get all branch tags getBranchTags
  * get all brancg groups getBrachGroups
  * get all branch people getBranchPeople
+ * delete branch: and all the nested branches: fullDeleteBranch 
  */
 module.exports = class Branch {
     constructor(data) {
@@ -109,4 +110,37 @@ module.exports = class Branch {
             })
         })
     }
+    // delete branch: and all the nested branches:
+    static fullDeleteBranch = (id) => {
+        return new Promise((reslove, reject) => {
+            // query to delete all child branches
+            let query = 'DELETE FROM branches WHERE parentID = ?'
+            sql.query(query, [id], (err, childRes) => {
+                if (err) return reject(err)
+                // delete from tags_branches: 
+                query = 'DELETE FROM branches_tags WHERE branchID = ?'
+                sql.query(query, [id], (err3, tagsRes) => {
+                    if (err3) return reject(err3)
+                    // delete from branches_people
+                    query = 'DELETE FROM branches_people WHERE branchID = ?'
+                    sql.query(query, [id], (err4, peopleRes) => {
+                        if (err4) return reject(err4)
+                        // delete from branches_groups
+                        query = 'DELETE FROM branches_groups WHERE branchID = ?'
+                        sql.query(query, [id], (err5, groupsRes) => {
+                            if (err5) return reject(err5)
+                            // query to delete the branch
+                            query = 'DELETE FROM branches WHERE id = ?'
+                            sql.query(query, [id], (err2, branchRes) => {
+                                if (err2) return reject(err2)
+                                reslove({ childRes, tagsRes, peopleRes, groupsRes, branchRes })
+                            })
+                        })
+                    })
+                })
+            })
+        })
+    }
+
+
 }
