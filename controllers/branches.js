@@ -278,10 +278,16 @@ function updateData(data, branch) {
         branch.parentID = data.parentID
     if (data.lang)
         branch.lang = data.lang
-    if (data.pinned)
-        branch.pinned = data.pinned
-    if (data.positive)
-        branch.positive = data.positive
+
+    if (data.pinned == 1) branch.pinned = data.pinned
+    if (data.pinned == '1') branch.pinned = data.pinned
+    if (data.pinned == 0) branch.pinned = data.pinned
+    if (data.pinned == '0') branch.pinned = data.pinned
+    if (data.positive == 1) branch.positive = data.positive
+    if (data.positive == '1') branch.positive = data.positive
+    if (data.positive == 0) branch.positive = data.positive
+    if (data.positive == '0') branch.positive = data.positive
+
     if (data.extra)
         branch.extra = data.extra
     return branch
