@@ -15,5 +15,6 @@ router.post('/toggle-person', tokenValidate, controller.toggleBranchPerson)
 router.get('/branch-tags', tokenValidate, controller.getBranchTags)
 router.get('/branch-groups', tokenValidate, controller.getBranchGroups)
 router.get('/branch-people', tokenValidate, controller.getBranchPeople)
+router.get('/origin', tokenValidate, controller.getBranchOrigin)
 
 module.exports = router;

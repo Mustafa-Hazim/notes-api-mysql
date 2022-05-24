@@ -259,6 +259,15 @@ const getRootBranches = ('/root', (req, res) => {
     })
 })
 
+// get branch origin : 
+const getBranchOrigin = ('/origin', (req, res) => {
+    if (!req.query.id) return res.statu(400).json({ error: "branch id is required" })
+    Branch.getBranchOrigin(req.query.id, (err, result) => {
+        if (err) return res.status(500).json({ error: err })
+        res.json(result[0])
+    })
+})
+
 
 
 function parseArrExtra(result) {
@@ -279,7 +288,7 @@ function updateData(data, branch) {
     if (data.lang)
         branch.lang = data.lang
 
-    if (data.pinned == 1) branch.pinned = data.pinned 
+    if (data.pinned == 1) branch.pinned = data.pinned
     if (data.pinned == '1') branch.pinned = data.pinned
     if (data.pinned == 0) branch.pinned = data.pinned
     if (data.pinned == '0') branch.pinned = data.pinned
@@ -306,5 +315,6 @@ module.exports = {
     getBranchPeople,
     fullyDeleteBranch,
     getRootBranches,
+    getBranchOrigin,
 
 }

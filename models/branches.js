@@ -142,5 +142,19 @@ module.exports = class Branch {
         })
     }
 
+    // get branch origin: 
+    static getBranchOrigin = (id, callback) => {
+        let query = 'SELECT parentID FROM branches WHERE id = ?'
+        sql.query(query, [id], (errBranch, branch) => {
+            if (errBranch) return callback(errBranch)
+            if(branch.length > 0) {
+                query = 'SELECT * FROM branches WHERE id = ?'
+                sql.query(query, [branch[0].parentID], (err, result) => {
+                    callback(err, result)
+                })
+            }
+        })
+    }
+
 
 }
