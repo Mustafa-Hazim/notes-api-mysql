@@ -111,7 +111,11 @@ const login = ('/login', (req, res) => {
 
 
 const status = ('/status', (req, res) => {
-    res.send(req.user)
+     // get user card: 
+     UserCard.getByUserID(req.user.id, (err2, result2) => {
+        if (err2) return res.json({ err2 })
+        res.json({userCard: result2[0] })
+    })
 })
 
 
