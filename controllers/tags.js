@@ -55,7 +55,8 @@ const getTagBranches = ('/', (req, res, next) => {
 
 
 const SearchTagByName = ('/search', (req, res) => {
-    if (!req.query.q) return res.status(400).jons({ error: 'need q query' })
+    if (req.query.q.length <= 0) return Tag.getAll(req.user.id, (err, result) => res.json(result))
+    if (!req.query.q) return res.status(400).json({ error: 'need q query' })
     Tag.searchTagByName(req.query.q, (err, result) => {
         if (err) return res.status(500).json({ error: err })
         res.json(result)
