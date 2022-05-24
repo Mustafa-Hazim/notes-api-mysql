@@ -279,7 +279,7 @@ function updateData(data, branch) {
     if (data.lang)
         branch.lang = data.lang
 
-    if (data.pinned == 1) branch.pinned = data.pinned
+    if (data.pinned == 1) branch.pinned = data.pinned 
     if (data.pinned == '1') branch.pinned = data.pinned
     if (data.pinned == 0) branch.pinned = data.pinned
     if (data.pinned == '0') branch.pinned = data.pinned
