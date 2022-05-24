@@ -97,7 +97,12 @@ const login = ('/login', (req, res) => {
         // sign webtoken where expiresIn in seconds
         var token = jwt.sign({ id: user.id }, secret, { expiresIn: 86400 });
 
-        res.json({ token })
+        // get user card: 
+        UserCard.getByUserID(user.id, (err2, result2) => {
+            if (err2) return res.json({ err2 })
+            res.json({ token, userCard: result2[0] })
+        })
+
 
     })
 
