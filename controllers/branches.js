@@ -34,6 +34,9 @@ const Person = require('../models/people')
  * 
  * fullyDeleteBranch
  * 
+ * get root branchess: getRootBranches
+ *      to get user root branches
+ * 
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'the tag name is required' } })
@@ -245,6 +248,17 @@ const fullyDeleteBranch = ('/', (req, res) => {
         })
 })
 
+// get root barnches: 
+const getRootBranches = ('/root', (req, res) => {
+    const userID = req.user.id
+    Branch.getRootId(userID, (rootId) => {
+        Branch.getNestedById(rootId, (err, result) => {
+            if (err) return res.status(500).json(err)
+            return res.json(result)
+        })
+    })
+})
+
 
 
 function parseArrExtra(result) {
@@ -285,5 +299,6 @@ module.exports = {
     getBranchGroups,
     getBranchPeople,
     fullyDeleteBranch,
+    getRootBranches,
 
 }
