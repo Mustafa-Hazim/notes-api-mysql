@@ -51,6 +51,20 @@ const getPersonBranches = ('/', (req, res, next) => {
     })
 })
 
+
+// search person by name:
+const SearchPersonByName = ('/search', (req, res) => {
+    if (!req.query.q) return res.status(400).jons({ error: 'need q query' })
+    Person.searchPersonByName(req.query.q, (err, result) => {
+        if (err) return res.status(500).json({ error: err })
+        res.json(result)
+    })
+})
+
+
+
+
+
 // functoin to parse branch extra
 function parseArrExtra(result) {
     result = result.map((b) => {
@@ -67,4 +81,5 @@ module.exports = {
     edit,
     getAll,
     getPersonBranches,
+    SearchPersonByName,
 }

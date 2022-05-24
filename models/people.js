@@ -7,6 +7,7 @@ const sql = require('../db/connection')
  * add branch person branchesPersonInsert
  * remove branch person removeBranchPerson
  * get all person branches getPersonBranches
+ * search person by name: searchPersonByName
  */
 module.exports = class Person {
     constructor(data) {
@@ -65,6 +66,14 @@ module.exports = class Person {
     static getPersonBranches = (personID, callback) => {
         const query = 'SELECT * from branches_people  JOIN branches on branchID = branches.id WHERE personID = ?'
         sql.query(query, [personID], (err, result) => {
+            callback(err, result)
+        })
+    }
+
+    // search person by name: 
+    static searchPersonByName = (q, callback) => {
+        const query = "SELECT * from people where fname like " + "'%" + q + "%' OR lname like" + "'%" + q + "%'"
+        sql.query(query, [q], (err, result) => {
             callback(err, result)
         })
     }
