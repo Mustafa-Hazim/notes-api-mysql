@@ -4,6 +4,8 @@ const Group = require('../models/groups')
  * edit to edit one group required new name as name and the group id
  * get all to get all the group
  * get all group branches getGroupBranches
+ * 
+ * search group by name: SearchGroupByName
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'name is required' } })
@@ -49,6 +51,14 @@ const getGroupBranches = ('/', (req, res, next) => {
     })
 })
 
+const SearchGroupByName = ('/search', (req, res) => {
+    if (!req.query.q) return res.status(400).jons({ error: 'need q query' })
+    Group.searchGroupByName(req.query.q, (err, result) => {
+        if (err) return res.status(500).json({ error: err })
+        res.json(result)
+    })
+})
+
 // functoin to parse branch extra
 function parseArrExtra(result) {
     result = result.map((b) => {
@@ -63,4 +73,6 @@ module.exports = {
     edit,
     getAll,
     getGroupBranches,
+    SearchGroupByName,
+
 }

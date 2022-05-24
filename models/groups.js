@@ -68,4 +68,12 @@ module.exports = class Group {
         })
     }
 
+    // search group by name: 
+    static searchGroupByName = (q, callback) => {
+        const query = "SELECT * from groups where name like " + "'%" + q + "%'"
+        sql.query(query, [q], (err, result) => {
+            callback(err, result)
+        })
+    }
+
 }

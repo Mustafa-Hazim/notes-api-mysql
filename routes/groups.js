@@ -6,5 +6,6 @@ const tokenValidate = require('../token_validate');
 router.get('/', tokenValidate, [controller.getGroupBranches, controller.getAll])
 router.post('/', tokenValidate, controller.add)
 router.patch('/', tokenValidate, controller.edit)
+router.get('/search', tokenValidate, controller.SearchGroupByName)
 
 module.exports = router;
