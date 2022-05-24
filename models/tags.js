@@ -8,6 +8,7 @@ const sql = require('../db/connection')
  * add branch tag branchesTagsInsert
  * remove branch tag removeBranchTag
  * get all tag branches getTagBranches
+ * search tag by name: searchTagByName
  */
 module.exports = class Tag {
     constructor(data) {
@@ -65,6 +66,16 @@ module.exports = class Tag {
     static getTagBranches = (tagID, callback) => {
         const query = 'SELECT * from branches_tags  JOIN branches on branchID = branches.id WHERE tagID = ?'
         sql.query(query, [tagID], (err, result) => {
+            callback(err, result)
+        })
+    }
+
+
+
+    // search tag by name: 
+    static searchTagByName = (q, callback) => {
+        const query = "SELECT * from tags where name like " + "'%" + q + "%'"
+        sql.query(query, [q], (err, result) => {
             callback(err, result)
         })
     }

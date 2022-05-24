@@ -4,6 +4,7 @@ const Tag = require('../models/tags')
  * edit to edit one tag required new name as name and the tag id
  * get all to get all the tags
  * get all tag branches getTagBranches
+ * search tag by name SearchTagByName
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'the tag name is required' } })
@@ -51,6 +52,19 @@ const getTagBranches = ('/', (req, res, next) => {
     })
 })
 
+
+
+const SearchTagByName = ('/search', (req, res) => {
+    if (!req.query.q) return res.status(400).jons({ error: 'need q query' })
+    Tag.searchTagByName(req.query.q, (err, result) => {
+        if (err) return res.status(500).json({ error: err })
+        res.json(result)
+    })
+})
+
+
+
+
 // functoin to parse branch extra
 function parseArrExtra(result) {
     result = result.map((b) => {
@@ -67,4 +81,5 @@ module.exports = {
     edit,
     getAll,
     getTagBranches,
+    SearchTagByName,
 }
