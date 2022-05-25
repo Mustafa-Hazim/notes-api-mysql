@@ -9,6 +9,7 @@ const sql = require('../db/connection')
  * get all brancg groups getBrachGroups
  * get all branch people getBranchPeople
  * delete branch: and all the nested branches: fullDeleteBranch 
+ * getLatestBranches get latest branches 
  */
 module.exports = class Branch {
     constructor(data) {
@@ -147,12 +148,20 @@ module.exports = class Branch {
         let query = 'SELECT parentID FROM branches WHERE id = ?'
         sql.query(query, [id], (errBranch, branch) => {
             if (errBranch) return callback(errBranch)
-            if(branch.length > 0) {
+            if (branch.length > 0) {
                 query = 'SELECT * FROM branches WHERE id = ?'
                 sql.query(query, [branch[0].parentID], (err, result) => {
                     callback(err, result)
                 })
             }
+        })
+    }
+
+    // get latest branches:
+    static getLatestBranches = (userID, callback) => {
+        const query = 'SELECT * FROM `branches` WHERE user = ? ORDER BY created_at DESC LIMIT 25;'
+        sql.query(query, [userID], (err, result) => {
+            callback(err, result)
         })
     }
 

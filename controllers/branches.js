@@ -19,6 +19,7 @@ const Person = require('../models/people')
  *  
  * edit to edit one branch required new name as name and the branch id
  * 
+ * get latest branches getLatest without the root branch
  * get branch by id return next if not id in query
  * get all to get all the branch
  * 
@@ -116,12 +117,23 @@ const edit = ('/', (req, res) => {
 
 })
 
+// get latest branches: with out root branch
+const getLatest = ('/', (req, res, next) => {
+    if (!req.query.latest) return next()
+    Branch.getLatestBranches(req.user.id, (err, latest) => {
+        if (err) return res.status(500).json({ error: err })
+        const branches = latest.filter(e => {
+            return e.type !== 'root'
+        })
+        return res.json(branches)
+    })
+})
 
 // get by id getById.
-const getById = ('/', (req, res , next) => {
-    if(!req.query.id) return next()
+const getById = ('/', (req, res, next) => {
+    if (!req.query.id) return next()
     Branch.getById(req.query.id, (err, result) => {
-        if(err) return res.status(500).json({error: err})
+        if (err) return res.status(500).json({ error: err })
         return res.json(result[0])
     })
 })
@@ -329,5 +341,5 @@ module.exports = {
     getRootBranches,
     getBranchOrigin,
     getById,
-
+    getLatest,
 }
