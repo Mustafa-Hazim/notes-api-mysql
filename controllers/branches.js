@@ -18,6 +18,8 @@ const Person = require('../models/people')
  *          -   parse json for the extra text
  *  
  * edit to edit one branch required new name as name and the branch id
+ * 
+ * get branch by id return next if not id in query
  * get all to get all the branch
  * 
  * getNested: 
@@ -112,6 +114,16 @@ const edit = ('/', (req, res) => {
     })
 
 
+})
+
+
+// get by id getById.
+const getById = ('/', (req, res , next) => {
+    if(!req.query.id) return next()
+    Branch.getById(req.query.id, (err, result) => {
+        if(err) return res.status(500).json({error: err})
+        return res.json(result[0])
+    })
 })
 
 const getAll = ('/', (req, res) => {
@@ -316,5 +328,6 @@ module.exports = {
     fullyDeleteBranch,
     getRootBranches,
     getBranchOrigin,
+    getById,
 
 }
