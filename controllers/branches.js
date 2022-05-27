@@ -148,11 +148,20 @@ const getAll = ('/', (req, res) => {
 })
 
 const getNested = ('/nested', (req, res) => {
-    Branch.getNestedById(req.query.id, (err, result) => {
-        if (err) return res.json(err)
-        result = parseArrExtra(result)
-        return res.json(result)
-    })
+    if (!req.query.id) return res.status(400).json({ error: 'branch id as id is required' })
+    if (req.query.ordered) {
+        Branch.getNestedByIdOrdered(req.query.id, (err, result) => {
+            if (err) return res.json(err)
+            result = parseArrExtra(result)
+            return res.json(result)
+        })
+    } else {
+        Branch.getNestedById(req.query.id, (err, result) => {
+            if (err) return res.json(err)
+            result = parseArrExtra(result)
+            return res.json(result)
+        })
+    }
 })
 
 

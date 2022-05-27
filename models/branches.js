@@ -80,6 +80,13 @@ module.exports = class Branch {
             callback(err, result)
         })
     }
+    //get all branch child by id: 
+    static getNestedByIdOrdered = (id, callback) => {
+        const query = 'SELECT * FROM branches WHERE parentID = ? ORDER BY created_at DESC'
+        sql.query(query, [id], (err, result) => {
+            callback(err, result)
+        })
+    }
 
     // get all branch tags:
     static getBranchTags = (id) => {
