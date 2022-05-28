@@ -65,7 +65,7 @@ const SearchPersonByName = ('/search', (req, res) => {
 
 // delete person by id: 
 const deletePerson = ('/', (req, res) => {
-    if(!req.query.id) return res.status(400).json({error: 'need id in query to delete'})
+    if (!req.query.id) return res.status(400).json({ error: 'need id in query to delete' })
     Person.deletePerson(req.query.id, (err, result) => {
         res.json(result)
     })

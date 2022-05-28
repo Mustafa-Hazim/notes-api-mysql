@@ -81,11 +81,11 @@ module.exports = class Person {
     // delete person:
     static deletePerson = (id, callback) => {
         let query = 'DELETE from branches_people WHERE personID = ?'
-        sql.query(query, [id], (err1, res1 ) => {
-            if(err1) return callback(err1)
+        sql.query(query, [id], (err1, res1) => {
+            if (err1) return callback(err1)
             query = 'DELETE from people WHERE id = ?'
             sql.query(query, [id], (err2, res2) => {
-                if(err2) return callback(err2)
+                if (err2) return callback(err2)
                 callback(res1, res2)
             })
         })

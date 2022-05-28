@@ -66,7 +66,7 @@ const SearchGroupByName = ('/search', (req, res) => {
 
 // delete group by id: 
 const deleteGroup = ('/', (req, res) => {
-    if(!req.query.id) return res.status(400).json({error: 'need id in query to delete'})
+    if (!req.query.id) return res.status(400).json({ error: 'need id in query to delete' })
     Group.deleteGroup(req.query.id, (err, result) => {
         res.json(result)
     })

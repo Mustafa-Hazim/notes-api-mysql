@@ -68,7 +68,7 @@ const SearchTagByName = ('/search', (req, res) => {
 
 // delete tag by id: 
 const deleteTag = ('/', (req, res) => {
-    if(!req.query.id) return res.status(400).json({error: 'need id in query to delete'})
+    if (!req.query.id) return res.status(400).json({ error: 'need id in query to delete' })
     Tag.deleteTag(req.query.id, (err, result) => {
         res.json(result)
     })
@@ -94,5 +94,5 @@ module.exports = {
     getTagBranches,
     SearchTagByName,
     deleteTag,
-    
+
 }
