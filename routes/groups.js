@@ -7,5 +7,6 @@ router.get('/', tokenValidate, [controller.getGroupBranches, controller.getAll])
 router.post('/', tokenValidate, controller.add)
 router.patch('/', tokenValidate, controller.edit)
 router.get('/search', tokenValidate, controller.SearchGroupByName)
+router.delete('/', tokenValidate, controller.deleteGroup)
 
 module.exports = router;

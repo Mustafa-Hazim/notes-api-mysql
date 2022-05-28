@@ -4,6 +4,7 @@ const Person = require('../models/people')
  * edit to edit one tag required new fname and lname and the person id
  * get all to get all people
  * get person branches getPersonBranches
+ * delete person : deletePerson
  */
 const add = ('/', (req, res) => {
     if (!req.body.fname) return res.status(400).json({ error: { message: 'the first name is required' } })
@@ -62,6 +63,14 @@ const SearchPersonByName = ('/search', (req, res) => {
     })
 })
 
+// delete person by id: 
+const deletePerson = ('/', (req, res) => {
+    if(!req.query.id) return res.status(400).json({error: 'need id in query to delete'})
+    Person.deletePerson(req.query.id, (err, result) => {
+        res.json(result)
+    })
+})
+
 
 
 
@@ -83,4 +92,5 @@ module.exports = {
     getAll,
     getPersonBranches,
     SearchPersonByName,
+    deletePerson,
 }

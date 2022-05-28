@@ -9,6 +9,7 @@ const sql = require('../db/connection')
  * remove branch tag removeBranchTag
  * get all tag branches getTagBranches
  * search tag by name: searchTagByName
+ * deleteTag delete tag:
  */
 module.exports = class Tag {
     constructor(data) {
@@ -77,6 +78,21 @@ module.exports = class Tag {
         const query = "SELECT * from tags where name like " + "'%" + q + "%'"
         sql.query(query, [q], (err, result) => {
             callback(err, result)
+        })
+    }
+
+
+    
+    // delete tag:
+    static deleteTag = (id, callback) => {
+        let query = 'DELETE from branches_tags WHERE tagID = ?'
+        sql.query(query, [id], (err1, res1 ) => {
+            if(err1) return callback(err1)
+            query = 'DELETE from tags WHERE id = ?'
+            sql.query(query, [id], (err2, res2) => {
+                if(err2) return callback(err2)
+                callback(res1, res2)
+            })
         })
     }
 

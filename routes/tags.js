@@ -7,5 +7,6 @@ router.get('/', tokenValidate, [controller.getTagBranches, controller.getAll])
 router.post('/', tokenValidate, controller.add)
 router.patch('/', tokenValidate, controller.edit)
 router.get('/search', tokenValidate, controller.SearchTagByName)
+router.delete('/', tokenValidate, controller.deleteTag)
 
 module.exports = router;

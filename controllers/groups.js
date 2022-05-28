@@ -6,6 +6,8 @@ const Group = require('../models/groups')
  * get all group branches getGroupBranches
  * 
  * search group by name: SearchGroupByName
+ * 
+ * delete group by id deleteGroup
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'name is required' } })
@@ -60,6 +62,17 @@ const SearchGroupByName = ('/search', (req, res) => {
     })
 })
 
+
+
+// delete group by id: 
+const deleteGroup = ('/', (req, res) => {
+    if(!req.query.id) return res.status(400).json({error: 'need id in query to delete'})
+    Group.deleteGroup(req.query.id, (err, result) => {
+        res.json(result)
+    })
+})
+
+
 // functoin to parse branch extra
 function parseArrExtra(result) {
     result = result.map((b) => {
@@ -75,5 +88,5 @@ module.exports = {
     getAll,
     getGroupBranches,
     SearchGroupByName,
-
+    deleteGroup,
 }

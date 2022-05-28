@@ -7,6 +7,7 @@ const sql = require('../db/connection')
  * add branch group branchesGroupsInsert
  * remove branch group removeBranchGroup
  * get all group branches getGroupBranches
+ * delete group: deleteGroup
  */
 module.exports = class Group {
     constructor(data) {
@@ -73,6 +74,20 @@ module.exports = class Group {
         const query = "SELECT * from groups where name like " + "'%" + q + "%'"
         sql.query(query, [q], (err, result) => {
             callback(err, result)
+        })
+    }
+
+    
+    // delete group:
+    static deleteGroup = (id, callback) => {
+        let query = 'DELETE from branches_groups WHERE groupID = ?'
+        sql.query(query, [id], (err1, res1 ) => {
+            if(err1) return callback(err1)
+            query = 'DELETE from groups WHERE id = ?'
+            sql.query(query, [id], (err2, res2) => {
+                if(err2) return callback(err2)
+                callback(res1, res2)
+            })
         })
     }
 

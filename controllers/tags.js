@@ -5,6 +5,7 @@ const Tag = require('../models/tags')
  * get all to get all the tags
  * get all tag branches getTagBranches
  * search tag by name SearchTagByName
+ * delete tag by id deleteTag
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'the tag name is required' } })
@@ -65,6 +66,15 @@ const SearchTagByName = ('/search', (req, res) => {
 
 
 
+// delete tag by id: 
+const deleteTag = ('/', (req, res) => {
+    if(!req.query.id) return res.status(400).json({error: 'need id in query to delete'})
+    Tag.deleteTag(req.query.id, (err, result) => {
+        res.json(result)
+    })
+})
+
+
 
 // functoin to parse branch extra
 function parseArrExtra(result) {
@@ -83,4 +93,6 @@ module.exports = {
     getAll,
     getTagBranches,
     SearchTagByName,
+    deleteTag,
+    
 }
