@@ -172,5 +172,13 @@ module.exports = class Branch {
         })
     }
 
+    // search branch by name: 
+    static searchBranchByName = (q, callback) => {
+        const query = "SELECT * from branches where name like " + "'%" + q + "%'"
+        sql.query(query, [q], (err, result) => {
+            callback(err, result)
+        })
+    }
+
 
 }

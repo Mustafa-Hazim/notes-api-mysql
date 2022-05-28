@@ -40,6 +40,8 @@ const Person = require('../models/people')
  * get root branchess: getRootBranches
  *      to get user root branches
  * 
+ * search branch by name : searchBranchByName
+ * 
  */
 const add = ('/', (req, res) => {
     if (!req.body.name) return res.status(400).json({ error: { message: 'the tag name is required' } })
@@ -301,6 +303,14 @@ const getBranchOrigin = ('/origin', (req, res) => {
     })
 })
 
+const searchBranchByName = ('/search', (req, res) => {
+    if(!req.query.q) return res.status(400).json({error: 'need q to search'})
+    Branch.searchBranchByName(req.query.q, (err, result) => {
+        result = parseArrExtra(result)
+        res.json(result)
+    })
+})
+
 
 
 function parseArrExtra(result) {
@@ -351,4 +361,6 @@ module.exports = {
     getBranchOrigin,
     getById,
     getLatest,
+    searchBranchByName,
+    
 }
