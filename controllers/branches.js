@@ -304,7 +304,7 @@ const getBranchOrigin = ('/origin', (req, res) => {
 })
 
 const searchBranchByName = ('/search', (req, res) => {
-    if(!req.query.q) return res.status(400).json({error: 'need q to search'})
+    if (!req.query.q) return res.status(400).json({ error: 'need q to search' })
     Branch.searchBranchByName(req.query.q, (err, result) => {
         result = parseArrExtra(result)
         res.json(result)
@@ -362,5 +362,5 @@ module.exports = {
     getById,
     getLatest,
     searchBranchByName,
-    
+
 }

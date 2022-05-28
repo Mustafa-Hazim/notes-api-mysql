@@ -10,6 +10,8 @@ const sql = require('../db/connection')
  * get all branch people getBranchPeople
  * delete branch: and all the nested branches: fullDeleteBranch 
  * getLatestBranches get latest branches 
+ * 
+ * search branch by name: searchBranchByName
  */
 module.exports = class Branch {
     constructor(data) {
