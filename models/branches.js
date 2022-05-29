@@ -175,9 +175,9 @@ module.exports = class Branch {
     }
 
     // search branch by name: 
-    static searchBranchByName = (q, callback) => {
-        const query = "SELECT * from branches where name like " + "'%" + q + "%'"
-        sql.query(query, [q], (err, result) => {
+    static searchBranchByName = (q, userID, callback) => {
+        const query = "SELECT * from branches where name like " + "'%" + q + "%' AND user=?"
+        sql.query(query, [userID], (err, result) => {
             callback(err, result)
         })
     }
