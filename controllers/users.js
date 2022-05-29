@@ -95,7 +95,7 @@ const login = ('/login', (req, res) => {
         // check if verify account: 
         if (!user.verified) return res.status(401).json({ error: 'please contact the admin to activate your account at hazim6163@gmail.com' })
         // sign webtoken where expiresIn in seconds
-        var token = jwt.sign({ id: user.id }, secret, { expiresIn: 86400 });
+        var token = jwt.sign({ id: user.id }, secret, { expiresIn: 31536000 });
 
         // get user card: 
         UserCard.getByUserID(user.id, (err2, result2) => {
