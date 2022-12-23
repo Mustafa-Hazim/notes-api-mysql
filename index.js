@@ -35,11 +35,11 @@ app.use('/branches', branchesRoutes)
 
 
 app.get('/', (req, res, next) => {
-    res.send('app working fine')
+    res.send('notes app')
 })
 
 // create port 
-const port = process.env.PORT || 3000
+const port =  3001
 // starting the server 
 app.listen(port, () => {
     console.log('server running on: ' + port)
